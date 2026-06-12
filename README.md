@@ -20,7 +20,7 @@ Una piattaforma di podcast vuole costruire un grafo per rappresentare autori, po
 Query suggerite:
 Trovare tutti gli episodi in cui compare un certo ospite.
 Individuare i podcast collegati tra loro perché trattano gli stessi argomenti o condividono ospiti.
-3. Database NoSQL documentale (Elasticsearch)
+
 
 ## Descrizione tecnica del progetto
 
