@@ -74,7 +74,13 @@ Il secondo script stabilisce le connessioni tra i nodi creati, costruendo la str
 
 Dopo l'esecuzione degli script di creazione, il grafo risultante è visualizzato nell'immagine seguente:
 
-![Grafo Completo](total_result.png)
+**Query per visualizzare tutto il grafo**:
+```cypher
+MATCH (a)-[r]->(b)
+RETURN a, r, b;
+```
+
+![Grafo Completo](screenshots/total_result.png)
 
 L'immagine mostra la struttura completa del database a grafo con tutti i nodi e le relative relazioni. Si può notare:
 - Le connessioni tra l'autore e i podcast
@@ -89,6 +95,8 @@ L'immagine mostra la struttura completa del database a grafo con tutti i nodi e 
 ### Script: `03_queries.cypher`
 
 Il terzo script contiene le query per interrogare il database e ottenere informazioni specifiche.
+
+> **💡 Esecuzione Automatizzata**: Le stesse query possono essere eseguite programmaticamente tramite lo script Python `grafo/python/neo4j_queries.py`. Questo script automatizza l'esecuzione delle tre query e restituisce i risultati in formato testuale sul terminale. Per istruzioni dettagliate sull'esecuzione, consulta il file [`how_to_run.md`](../how_to_run.md).
 
 ### 3.1 Query 1: Trovare tutti gli episodi di un ospite
 
@@ -125,7 +133,7 @@ RETURN p1, r1, e1, r2, o, r3, e2, r4, p2;
 
 **Risultato**:
 
-![Risultato Query 2A](result_query_2a.png)
+![Risultato Query 2A](screenshots/result_query_2a.png)
 
 **Interpretazione**: La query identifica il collegamento tra "Tech Talks" e "Sport Inside" attraverso l'ospite Luca Bianchi. Questo tipo di analisi è utile per:
 - Identificare sinergie tra podcast
@@ -190,13 +198,30 @@ Il modello può essere arricchito con:
 
 ## 5. Riepilogo degli Script
 
-| Script | Funzione | Output |
-|--------|----------|--------|
-| `01_create_nodes.cypher` | Creazione di tutti i nodi del grafo | 13 nodi creati |
-| `02_create_relationships.cypher` | Creazione delle relazioni tra nodi | 15 relazioni create |
-| `03_queries.cypher` | Interrogazioni analitiche sul grafo | 3 query (1, 2a, 2b) |
+| Script | Tipo | Funzione | Output |
+|--------|------|----------|--------|
+| `01_create_nodes.cypher` | Cypher | Creazione di tutti i nodi del grafo | 13 nodi creati |
+| `02_create_relationships.cypher` | Cypher | Creazione delle relazioni tra nodi | 15 relazioni create |
+| `03_queries.cypher` | Cypher | Interrogazioni analitiche sul grafo (esecuzione manuale) | 3 query con visualizzazione grafica |
+| `neo4j_queries.py` | Python | Esecuzione automatizzata delle query | Output testuale delle 3 query |
+
+### Modalità di Esecuzione
+
+Il progetto offre **due modalità** per eseguire le query:
+
+1. **Manuale/Visuale** (Neo4j Browser)
+   - File: `03_queries.cypher`
+   - Accesso: http://localhost:7474
+   - Output: Visualizzazione grafica interattiva del grafo
+   - Uso: Analisi esplorativa e documentazione visuale
+
+2. **Automatizzata/Programmatica** (Script Python)
+   - File: `python/neo4j_queries.py`
+   - Esecuzione: Da terminale WSL tramite `python grafo/python/neo4j_queries.py`
+   - Output: Risultati tabulari nel terminale
+   - Uso: Automazione, testing, integrazione in pipeline
+
+Per istruzioni dettagliate sull'esecuzione dello script Python, consultare [`how_to_run.md`](../how_to_run.md).
 
 ---
-
-*Documento generato per il progetto Big Data - Esame Unisalento*
 
