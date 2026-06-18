@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Pagina-1" id="6EaqovBtcRpzOxAn05-Q">
+    <mxGraphModel dx="1414" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="82zR--h8pzNuqKG8yDV4-1" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=light-dark(#FFFFFF,#99FFFF);" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(3, 3, 3));&quot;&gt;&lt;b style=&quot;text-decoration-line: underline;&quot;&gt;ORDINE&lt;/b&gt;&lt;br&gt;&lt;br&gt;{&lt;br&gt;_id,&lt;br&gt;&lt;code data-path-to-node=&quot;6,0,1,1,0&quot; data-index-in-node=&quot;0&quot;&gt;data_ordine,&lt;br&gt;totale_speso,&lt;br&gt;}&lt;/code&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="170" x="329" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="82zR--h8pzNuqKG8yDV4-3" edge="1" parent="1" source="82zR--h8pzNuqKG8yDV4-1" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="330" y="190" as="sourcePoint" />
+            <mxPoint x="240" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="82zR--h8pzNuqKG8yDV4-4" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=light-dark(#FFFFFF,#FF99FF);" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(3, 3, 3));&quot;&gt;&lt;b style=&quot;text-decoration-line: underline;&quot;&gt;CLIENTE&lt;/b&gt;&lt;br&gt;&lt;br&gt;{&lt;br&gt;email,&lt;br&gt;citta&amp;nbsp;&lt;br&gt;}&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="170" x="140" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="82zR--h8pzNuqKG8yDV4-5" edge="1" parent="1" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="410" y="250" as="sourcePoint" />
+            <mxPoint x="600" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="82zR--h8pzNuqKG8yDV4-6" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=light-dark(#FFFFFF,#FFD966);" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(3, 3, 3));&quot;&gt;&lt;b&gt;&lt;u&gt;PRODOTTI&lt;/u&gt;&lt;/b&gt;&lt;br&gt;[{&lt;br&gt;nome_prodotto,&lt;br&gt;categoria,&lt;br&gt;quantita&lt;br&gt;}]&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="170" x="510" y="410" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

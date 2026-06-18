@@ -22,13 +22,51 @@ Query suggerite:
 Trovare tutti gli episodi in cui compare un certo ospite.
 Individuare i podcast collegati tra loro perché trattano gli stessi argomenti o condividono ospiti.
 3. Database NO-SQL Key Document (Elasticsearch) – Negozio di elettronica
-Un negozio di elettronica vuole gestire il proprio catalogo digitale di prodotti tecnologici. Ogni prodotto è identificato da un codice univoco e contiene informazioni come nome, marca, categoria, prezzo, descrizione e disponibilità. I prodotti possono appartenere a diverse categorie come televisori, smartphone, laptop e tablet, e per ognuno di essi vengono memorizzate specifiche tecniche e parole chiave utili alla ricerca.
-Il sistema deve permettere agli utenti di effettuare ricerche rapide sui prodotti disponibili, filtrandoli in base a categoria, prezzo e caratteristiche testuali. Inoltre, deve essere possibile individuare i prodotti più economici e verificare la disponibilità in magazzino.
+Una catena di negozi di elettronica vuole gestire un sistema di ricerca e analisi dei propri dati tramite un database NoSQL orientato ai documenti. Il sistema deve permettere di memorizzare e interrogare rapidamente informazioni relative a clienti, prodotti e ordini in modo ottimizzato.
+Ogni Ordine rappresenta il documento principale e contiene al suo interno tutte le informazioni correlate all'acquisto:
+Informazioni Ordine: Codice ordine, data ordine e totale speso.
+Informazioni Cliente: Email e città di residenza del cliente che ha effettuato l'acquisto.
+Lista Prodotti: Un elenco dei beni acquistati, in cui per ogni prodotto si riportano il nome, la categoria (es. TV, smartphone, laptop) e la quantità associata.
 
 Query suggerite:
-Cercare tutti i prodotti che contengono una determinata parola chiave nel nome o nella descrizione (es. “Samsung”, “4K”, “laptop”).
-Elencare tutti i prodotti appartenenti a una determinata categoria (es. TV, Smartphone, Laptop).
-Trovare tutti i prodotti con prezzo inferiore a una soglia prestabilita e che risultano disponibili in magazzino.
+Ricerca: Trovare tutti gli ordini effettuati da un determinato cliente (filtrato per email).
+Statistica: Trovare le categorie di prodotti più vendute (calcolate in base alla quantità totale).
 
 ## Descrizione tecnica del progetto
+
+### Prerequisiti
+
+- Docker e Docker Compose
+- Python 3.12+ (su WSL)
+- Virtual environment Python attivato
+
+### Avvio dei servizi Docker
+
+```bash
+docker-compose -f docker/docker-compose.yml up -d
+```
+
+Questo avvierà:
+- **Elasticsearch** su `http://localhost:9200` 
+- **Kibana** su `http://localhost:5601`
+- **Neo4j** su `http://localhost:7474` (browser) e `bolt://localhost:7687`
+
+### Setup Elasticsearch
+
+📖 **Guida completa**: [`elasticsearch/HOW_TO_RUN.md`](elasticsearch/how_to_run.md)
+
+**Procedura rapida:**
+1. Attivare virtual environment: `source .venv/bin/activate`
+2. Installare dipendenza: `pip install elasticsearch`
+3. Eseguire setup: `python elasticsearch/python/setup.py`
+4. Aprire Kibana http://localhost:5601 e creare Data View
+5. Eseguire query: `python elasticsearch/python/queries.py`
+
+### Setup Neo4j
+
+Seguire le istruzioni nel file `grafo/how_to_run.md`
+
+### Database Relazionale
+
+Il database SQLite si trova in `relazionale/database/ebook_library.db`
 
