@@ -14,8 +14,7 @@ JOIN dettaglio_acquisto da
 ON a.id = da.acquisto_id
 JOIN ebook e
 ON da.ebook_id = e.id
-WHERE u.email = '[mario.rossi@email.it](mailto:mario.rossi@email.it)';
-
+WHERE u.email = 'mario.rossi@email.it';
 -- =====================================================
 -- QUERY 2
 -- Calcolare il numero di acquisti effettuati per ciascuna collana
