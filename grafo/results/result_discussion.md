@@ -109,7 +109,7 @@ RETURN o, r, e;
 
 **Risultato**:
 
-![Risultato Query 1](result_query_1.png)
+![Risultato Query 1](screenshots/result_query_1.png)
 
 La query restituisce:
 - L'ospite Luca Bianchi

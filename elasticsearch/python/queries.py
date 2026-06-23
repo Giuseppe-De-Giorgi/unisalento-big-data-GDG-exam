@@ -99,7 +99,6 @@ def top_categories():
 # =========================
 if __name__ == "__main__":
 
-    # 👉 INPUT UTENTE DA TERMINALE
     email_input = input("\nInserisci email cliente: ").strip()
 
     if email_input == "":
