@@ -1,8 +1,3 @@
-"""
-1. Ricerca ordini per email cliente (input dinamico)
-2. Aggregazione categorie prodotti più vendute
-"""
-
 from elasticsearch import Elasticsearch
 
 # =========================
@@ -17,13 +12,31 @@ INDEX_NAME = "orders"
 
 
 # =========================
-# QUERY 1
+# UTILITY PRINT RISULTATI
 # =========================
-def search_orders_by_email(email):
+def print_results(title, response):
+    print("\n" + "=" * 70)
+    print(title)
+    print("=" * 70)
 
-    print("\n" + "=" * 60)
-    print(f"ORDINI PER CLIENTE: {email}")
-    print("=" * 60)
+    total = response["hits"]["total"]["value"]
+    print(f"TOTAL ORDERS FOUND: {total}")
+    print("-" * 70)
+
+    for hit in response["hits"]["hits"]:
+        source = hit["_source"]
+        print(
+            f"Order ID: {source['order_id']} | "
+            f"Total: {source['total']} | "
+            f"Date: {source['date']}"
+        )
+
+
+# =========================
+# QUERY 1 - ORDINI PER EMAIL (INPUT MANUALE)
+# =========================
+def query_orders_by_email():
+    email = input("\nInserisci email cliente: ")
 
     query = {
         "query": {
@@ -33,77 +46,83 @@ def search_orders_by_email(email):
         }
     }
 
-    response = es.search(index=INDEX_NAME, **query)
-    hits = response["hits"]["hits"]
-
-    # CASO NESSUN RISULTATO
-    if not hits:
-        print("Nessun ordine trovato per questa email.")
-        return
-
-    for i, hit in enumerate(hits, 1):
-        source = hit["_source"]
-
-        print(f"\nOrdine #{i}")
-        print(f"ID ordine: {source['order_id']}")
-        print(f"Data: {source['date']}")
-        print(f"Totale: {source['total']}")
-        print("-" * 40)
+    response = es.search(index=INDEX_NAME, body=query)
+    print_results(f"ORDINI PER CLIENTE: {email}", response)
+    return response
 
 
 # =========================
-# QUERY 2
+# QUERY 2 - ORDINI SAMSUNG
 # =========================
-def top_categories():
-
-    print("\n" + "=" * 60)
-    print("CATEGORIE PIÙ VENDUTE")
-    print("=" * 60)
-
+def query_orders_samsung():
     query = {
-        "size": 0,
-        "aggs": {
-            "categories": {
-                "nested": {
-                    "path": "products"
-                },
-                "aggs": {
-                    "by_category": {
-                        "terms": {
-                            "field": "products.category",
-                            "size": 10
-                        },
-                        "aggs": {
-                            "total_quantity": {
-                                "sum": {
-                                    "field": "products.quantity"
+        "query": {
+            "nested": {
+                "path": "products",
+                "query": {
+                    "bool": {
+                        "should": [
+                            {
+                                "match": {
+                                    "products.description": "samsung"
+                                }
+                            },
+                            {
+                                "match": {
+                                    "products.name": "samsung"
                                 }
                             }
-                        }
+                        ],
+                        "minimum_should_match": 1
                     }
                 }
             }
         }
     }
 
-    response = es.search(index=INDEX_NAME, **query)
+    response = es.search(index=INDEX_NAME, body=query)
+    print_results("ORDINI CON PRODOTTI SAMSUNG", response)
+    return response
 
-    buckets = response["aggregations"]["categories"]["by_category"]["buckets"]
 
-    for b in buckets:
-        print(f"{b['key']} -> quantità totale: {b['total_quantity']['value']}")
+# =========================
+# QUERY 3 - ORDINI QLED
+# =========================
+def query_orders_qled():
+    query = {
+        "query": {
+            "nested": {
+                "path": "products",
+                "query": {
+                    "bool": {
+                        "should": [
+                            {
+                                "match": {
+                                    "products.description": "qled"
+                                }
+                            },
+                            {
+                                "match": {
+                                    "products.name": "qled"
+                                }
+                            }
+                        ],
+                        "minimum_should_match": 1
+                    }
+                }
+            }
+        }
+    }
+
+    response = es.search(index=INDEX_NAME, body=query)
+    print_results("ORDINI CON PRODOTTI QLED", response)
+    return response
 
 
 # =========================
 # MAIN
 # =========================
 if __name__ == "__main__":
-
-    email_input = input("\nInserisci email cliente: ").strip()
-
-    if email_input == "":
-        print("Email non valida")
-    else:
-        search_orders_by_email(email_input)
-
-    top_categories()
+    query_orders_by_email()
+    query_orders_samsung()
+    query_orders_qled()

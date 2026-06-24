@@ -22,7 +22,7 @@
             <mxPoint x="600" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="82zR--h8pzNuqKG8yDV4-6" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=light-dark(#FFFFFF,#FFD966);" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(3, 3, 3));&quot;&gt;&lt;b&gt;&lt;u&gt;PRODOTTI&lt;/u&gt;&lt;/b&gt;&lt;br&gt;[{&lt;br&gt;nome_prodotto,&lt;br&gt;categoria,&lt;br&gt;quantita&lt;br&gt;}]&lt;/font&gt;" vertex="1">
+        <mxCell id="82zR--h8pzNuqKG8yDV4-6" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=light-dark(#FFFFFF,#FFD966);" value="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(3, 3, 3));&quot;&gt;&lt;b&gt;&lt;u&gt;PRODOTTI&lt;/u&gt;&lt;/b&gt;&lt;br&gt;[{&lt;br&gt;nome_prodotto,&lt;br&gt;categoria,&lt;br&gt;quantita,&lt;br&gt;descrizione&lt;br&gt;}]&lt;/font&gt;" vertex="1">
           <mxGeometry height="170" width="170" x="510" y="410" as="geometry" />
         </mxCell>
       </root>

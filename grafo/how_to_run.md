@@ -2,6 +2,8 @@
 
 Questa guida spiega come eseguire le query Neo4j del progetto utilizzando **WSL (Windows Subsystem for Linux)**.
 
+Il progetto include uno **script di setup automatizzato** (`setup.py`) che semplifica la creazione e il popolamento del database Neo4j.
+
 ---
 
 ## Prerequisiti
@@ -9,6 +11,23 @@ Questa guida spiega come eseguire le query Neo4j del progetto utilizzando **WSL 
 - **WSL** installato e configurato su Windows
 - **Docker** installato in WSL
 - **Python 3** disponibile in WSL
+
+---
+
+## 🚀 Quick Start (Per i più Impazienti)
+
+Se hai già Docker e Python configurati:
+
+```bash
+wsl
+cd /mnt/c/Project_dev/Unisalento/unisalento-big-data-GDG-exam
+cd docker && docker compose up -d && cd ..
+source .venv/bin/activate
+python grafo/python/setup.py        # Popola il database
+python grafo/python/neo4j_queries.py  # Esegui le query
+```
+
+Per il setup dettagliato, continua a leggere.
 
 ---
 
@@ -32,7 +51,8 @@ grafo/
 │   ├── 01_create_nodes.cypher
 │   ├── 02_create_relationships.cypher
 │   └── 03_queries.cypher
-├── python/                    # Script Python automatizzato
+├── python/                    # Script Python automatizzati
+│   ├── setup.py               # Setup automatizzato del database
 │   └── neo4j_queries.py       # Executor delle query
 ├── results/                   # Risultati e documentazione
 └── how_to_run.md             # Questa guida
@@ -79,11 +99,49 @@ docker compose logs neo4j
 
 Cerca il messaggio: `Started.` o `Bolt enabled on 0.0.0.0:7687.`
 
-### 5. Popola il Database (Solo la Prima Volta)
+### 5. Popola il Database
 
-Puoi popolare il database in due modi:
+Puoi popolare il database in tre modi:
 
-#### Opzione A: Tramite Neo4j Browser (Raccomandato)
+#### Opzione A: Script Automatizzato setup.py (✅ Raccomandato)
+
+Il metodo più semplice e veloce! Lo script `setup.py` esegue automaticamente:
+- Pulizia del database (rimozione nodi esistenti)
+- Creazione dei nodi (Autori, Podcast, Episodi, Ospiti, Argomenti)
+- Creazione delle relazioni tra i nodi
+
+**Esegui dalla root del progetto (con .venv attivo):**
+
+```bash
+cd /mnt/c/Project_dev/Unisalento/unisalento-big-data-GDG-exam
+source .venv/bin/activate
+python grafo/python/setup.py
+```
+
+**Output atteso:**
+```
+CREAZIONE DATABASE NEO4J
+
+================================================================================
+PULIZIA DATABASE
+================================================================================
+Database svuotato correttamente.
+
+================================================================================
+ESECUZIONE: 01_create_nodes.cypher
+================================================================================
+Script eseguito correttamente (11 statements).
+
+================================================================================
+ESECUZIONE: 02_create_relationships.cypher
+================================================================================
+Script eseguito correttamente (11 statements).
+
+Database creato correttamente.
+Connessione chiusa.
+```
+
+#### Opzione B: Tramite Neo4j Browser (Manuale)
 
 1. Apri il browser all'indirizzo: http://localhost:7474
 2. Accedi con:
@@ -95,7 +153,7 @@ Puoi popolare il database in due modi:
    - Copia e incolla il contenuto di `02_create_relationships.cypher`
    - Esegui
 
-#### Opzione B: Tramite cypher-shell (CLI)
+#### Opzione C: Tramite cypher-shell (CLI)
 
 ```bash
 docker exec -it neo4j_db cypher-shell -u neo4j -p password
@@ -169,6 +227,14 @@ Se il container Docker è già in esecuzione:
 wsl -e bash -c "cd /mnt/c/Project_dev/Unisalento/unisalento-big-data-GDG-exam && source .venv/bin/activate && python grafo/python/neo4j_queries.py"
 ```
 
+### Setup Database da Zero (Comando Rapido)
+
+Per ripopolare il database automaticamente:
+
+```bash
+wsl -e bash -c "cd /mnt/c/Project_dev/Unisalento/unisalento-big-data-GDG-exam && source .venv/bin/activate && python grafo/python/setup.py"
+```
+
 ---
 
 ## Output Atteso
@@ -222,8 +288,13 @@ data: 2025-01-10
 **Problema**: Il database è vuoto.
 
 **Soluzione**:
-1. Popola il database eseguendo i file `.cypher` da Neo4j Browser
-2. Verifica con: `MATCH (n) RETURN count(n);` (dovrebbe restituire 13 nodi)
+1. Ripopola il database automaticamente:
+   ```bash
+   source .venv/bin/activate
+   python grafo/python/setup.py
+   ```
+2. Oppure esegui manualmente i file `.cypher` da Neo4j Browser
+3. Verifica con: `MATCH (n) RETURN count(n);` (dovrebbe restituire 13 nodi)
 
 ### Virtual Environment non si Attiva
 
@@ -260,12 +331,21 @@ Questo ferma e rimuove il container (i dati persistono nel volume Docker).
 
 ### Connessione al Database
 
-Lo script Python si connette a Neo4j usando:
+Gli script Python si connettono a Neo4j usando:
 - **URI**: `bolt://localhost:7687`
 - **Username**: `neo4j`
 - **Password**: `password`
 
 Queste credenziali sono configurate nel file `docker-compose.yml`.
+
+### Setup vs Query Scripts
+
+Il progetto include due script Python:
+
+| Script | Scopo | Quando Usarlo |
+|--------|-------|---------------|
+| **setup.py** | Popola il database (crea nodi e relazioni) | Prima esecuzione o per reset database |
+| **neo4j_queries.py** | Esegue le query di analisi | Quando il database è già popolato |
 
 ### Query vs Cypher Files
 
@@ -277,6 +357,14 @@ Ci sono due modi per eseguire le query:
 | **Automatizzato** | `neo4j_queries.py` | Esecuzione programmatica con output testuale |
 
 Le query sono le stesse, ma lo script Python restituisce i risultati in formato testuale, mentre il browser Neo4j mostra la visualizzazione grafica del grafo.
+
+### Vantaggi dello Script setup.py
+
+- ✅ **Veloce**: Popola il database in pochi secondi
+- ✅ **Riproducibile**: Stesso risultato ogni volta
+- ✅ **Pulito**: Elimina automaticamente dati precedenti
+- ✅ **Automatizzato**: Esegue tutti gli script Cypher in sequenza
+- ✅ **Feedback**: Mostra il progresso e gli errori chiaramente
 
 ---
 
@@ -293,6 +381,10 @@ pip install neo4j
 # Avvio container (quando necessario)
 cd docker && docker compose up -d && cd ..
 
+# Popolamento database AUTOMATICO (raccomandato)
+source .venv/bin/activate
+python grafo/python/setup.py
+
 # Esecuzione query (uso quotidiano)
 source .venv/bin/activate
 python grafo/python/neo4j_queries.py
@@ -300,6 +392,27 @@ python grafo/python/neo4j_queries.py
 # Fermata container
 cd docker && docker compose down
 ```
+
+### Database Creato con setup.py
+
+Lo script `setup.py` crea automaticamente:
+
+**Nodi:**
+- 1 Autore (Marco Rossi)
+- 2 Podcast (Tech Talks, Sport Inside)
+- 4 Episodi
+- 2 Ospiti (Luca Bianchi, Sara Verdi)
+- 4 Argomenti
+
+**Totale: 13 nodi**
+
+**Relazioni:**
+- CONDUCE (Autore → Podcast)
+- HA_EPISODIO (Podcast → Episodio)
+- PARTECIPA (Ospite → Episodio)
+- TRATTA (Episodio → Argomento)
+
+Questa struttura semplice è ideale per scopi didattici e presentazioni.
 
 ---
 

@@ -1,22 +1,6 @@
-"""
-Script per il setup di Elasticsearch - Progetto Big Data
-
-PREREQUISITI:
-1. Avviare i container Docker:
-   docker-compose -f docker/docker-compose.yml up -d
-
-2. Installare la dipendenza Python (con virtual environment attivato):
-   pip install elasticsearch
-   (Versione consigliata: 9.x)
-
-3. Verificare che Elasticsearch sia attivo:
-   curl http://localhost:9200
-
-ESECUZIONE:
-   python elasticsearch/python/setup.py
-"""
-
 from elasticsearch import Elasticsearch
+import json
+from pathlib import Path
 
 # =========================
 # CONNESSIONE
@@ -28,19 +12,20 @@ es = Elasticsearch(
 
 INDEX_NAME = "orders"
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_FILE = BASE_DIR / "data" / "orders.json"
+
 
 # =========================
 # CREAZIONE INDICE
 # =========================
 def create_index():
-    # Prova a eliminare l'indice se esiste (ignora errori se non esiste)
     try:
         es.indices.delete(index=INDEX_NAME)
         print(f"Indice '{INDEX_NAME}' esistente eliminato")
     except Exception:
         print(f"Indice '{INDEX_NAME}' non esistente (verrà creato)")
 
-    # Crea il nuovo indice
     es.indices.create(
         index=INDEX_NAME,
         settings={
@@ -64,6 +49,7 @@ def create_index():
                     "type": "nested",
                     "properties": {
                         "name": {"type": "text"},
+                        "description": {"type": "text"},
                         "category": {"type": "keyword"},
                         "quantity": {"type": "integer"}
                     }
@@ -80,52 +66,13 @@ def create_index():
 # =========================
 def insert_data():
 
-    orders = [
-        {
-            "order_id": "1",
-            "date": "2025-01-10",
-            "total": 1200,
-            "customer": {"email": "luca@mail.com", "city": "Napoli"},
-            "products": [
-                {"name": "Samsung TV", "category": "TV", "quantity": 1},
-                {"name": "HDMI Cable", "category": "accessori", "quantity": 2}
-            ]
-        },
-        {
-            "order_id": "2",
-            "date": "2025-01-11",
-            "total": 800,
-            "customer": {"email": "mario@mail.com", "city": "Roma"},
-            "products": [
-                {"name": "iPhone", "category": "smartphone", "quantity": 1}
-            ]
-        },
-        {
-            "order_id": "3",
-            "date": "2025-01-15",
-            "total": 1500,
-            "customer": {"email": "luca@mail.com",
-                "city": "Napoli"
-            },
-            "products": [
-                {
-                    "name": "LG TV",
-                    "category": "TV",
-                    "quantity": 2
-                },
-                {
-                    "name": "Mouse Logitech",
-                    "category": "accessori",
-                    "quantity": 1
-                }
-            ]
-        }
-    ]
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        orders = json.load(f)
 
     for o in orders:
         es.index(index=INDEX_NAME, document=o)
 
-    print("Dati inseriti")
+    print(f"{len(orders)} ordini inseriti")
 
 
 # =========================
@@ -133,22 +80,18 @@ def insert_data():
 # =========================
 if __name__ == "__main__":
     try:
-        # Test connessione
         print("Verifico connessione a Elasticsearch...")
         info = es.info()
         print(f"✓ Connesso a Elasticsearch {info['version']['number']}")
         print(f"  Cluster: {info['cluster_name']}\n")
-        
-        # Esegui setup
+
         create_index()
         insert_data()
+
         print("\n✓ SETUP COMPLETATO CON SUCCESSO")
-        
+
     except Exception as e:
         print(f"\n✗ ERRORE: {type(e).__name__}")
         print(f"  Messaggio: {e}")
-        print("\nVerifica che:")
-        print("  1. Docker sia avviato: docker ps | grep elasticsearch")
-        print("  2. Elasticsearch sia raggiungibile: curl http://localhost:9200")
         import sys
         sys.exit(1)
