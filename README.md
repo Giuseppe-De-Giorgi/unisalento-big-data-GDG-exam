@@ -66,7 +66,8 @@ unisalento-big-data-GDG-exam/
 │   │   ├── setup.py                   # Setup automatizzato database
 │   │   └── queries.py                 # Esecuzione query Python
 │   ├── diagrammi/
-│   │   └── er-relazionale.png         # Diagramma ER
+│   │   └── er-relazionale.png         # Diagramma 
+│   │   └── ER.png                     # Diagramma ER
 │   └── how_to_run.md                  # Guida esecuzione
 │
 ├── 📁 grafo/                           # Database Neo4j - Rete Podcast
@@ -128,11 +129,12 @@ Una casa editrice vuole gestire una libreria digitale di ebook. Ogni libro digit
 
 1. **Ebook acquistati per utente**: Lista libri acquistati da un cliente specifico
 2. **Top collane per vendite**: Classifica collane più vendute
-3. **Statistiche acquisti**: Analisi comportamento utenti
 
 #### 📐 Diagramma ER
 
-Visualizza il diagramma ER completo: [`relazionale/diagrammi/er-relazionale.png`](relazionale/diagrammi/er-relazionale.png)
+Visualizza il diagramma : [`relazionale/diagrammi/er-relazionale.png`](relazionale/diagrammi/er-relazionale.png)
+
+Visualizza il diagramma ER completo: [`relazionale/diagrammi/ER.jpg`](relazionale/diagrammi/ER.jpg)
 
 ---
 
